@@ -25,6 +25,11 @@
   - [Monitors](#monitors)
   - [Notifications](#notifications)
   - [Waybar](#waybar)
+    - [Initial configuration](#initial-configuration)
+    - [API KEY](#module-weather)
+    - [Configure "battery" module](#configure-“battery”-module)
+    - [Configure custom module](#configure-custom-module)
+    - [Create custom moodule](#create-custom-module)
   - [Rofi](#rofi)
 - [Keybinding](#keybindings)
 
@@ -152,6 +157,164 @@ man 5 mako
 And you can see all values.
 
 ## Waybar
+
+Highly customizable Wayland [bar](https://github.com/Alexays/Waybar) for Sway and Wlroots based compositors.
+You need to know how to configure the modules [here](https://github.com/Alexays/Waybar/wiki/Module:-Backlight-Slider) module section.
+
+##### Initial configuration
+
+In this initial configuration, it will only be to add or remove any module that you do not use, for this we will go to this location: `~/.config/waybar/config.jsonc`
+
+```jsonc
+[
+  // Monitor
+  {
+    "layer": "top", // Waybar position (top|bottom|left|right)
+    "output": "eDP-1", // Waybar output
+    "include": "~/.config/waybar/modules/modules.jsonc",
+    "spacing": 3, // Gaps between modules (4px)
+    "height": 25,
+    // MODULES
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
+    "modules-right": [
+      "group/group-widgets",
+      "group/group-system",
+      "network",
+      "group/group-data",
+    ],
+  },
+  // HDMI-A-1
+  {
+    "layer": "top", // Waybar position (top|bottom|left|right)
+    "output": "HDMI-A-1", // Waybar output
+    "include": "~/.config/waybar/modules/modules.jsonc",
+    "spacing": 3, // Gaps between modules (4px)
+    "height": 25,
+    // MODULES
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["mpris", "custom/docker", "custom/weather"],
+  },
+]
+```
+
+The first thing to take into account is the video adapter, in my case they are with `eDP-1` and `HDMI-A-1`.
+To know what the output is, see [this](#monitors) section.
+To delete modules, just delete in the values:
+
+- `modules-left`: `["hyprland/workspaces"],` Remove module `hyprlan/window`
+- `modules-center`: `["clock"],`
+- `modules-right`: `["mpris", "custom/weather"]` Remove module `custom/docker`
+
+##### API KEY weather module
+
+You may have problems with the operation of the "weather" module. It will not work because you need an API KEY for it to work correctly.
+The script location is at: `~/.config/waybar/scripts/weather.py`
+
+##### Configure "battery" module
+
+To configure the modules in the following path `~/.config/waybar/modules/modules.jsonc`
+
+Example: Edit `modules.jsonc` search "battery" [module](https://github.com/Alexays/Waybar/wiki/Module:-Battery).
+
+```jsonc
+{
+  "battery": {
+    "bat": "BAT1", // run command ls /sys/class/power_supply/
+    "adapter": "ACAD", // run command ls /sys/class/power_supply/
+    "interval": 5,
+    "states": {
+      "warning": 30,
+      "critical": 15,
+    },
+    "format": " {icon} {capacity}% ",
+    "format-icons": {
+      "charging": [
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰢜</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂆</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂇</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂈</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰢝</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂉</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰢞</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂊</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂋</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂅</span>",
+      ],
+      "default": [
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰁺</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰁻</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰁼</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰁽</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰁾</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰁿</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂀</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂁</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂂</span>",
+        "<span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰁹</span>",
+      ],
+    },
+    "format-full": " <span font='11' font-family=\"JetBrainsMono Nerd Font Mono\">󰂄 Full</span> ",
+  }
+```
+
+For the correct operation of "bat" and "adapter" execute the following command in terminal:
+
+```bash
+ls /sys/class/power_supply/
+ ACAD   BAT1
+```
+
+This example is clear to modify any module you want in the `modules.jsonc` file.
+
+##### Configure custom module
+
+As an example we will take the installed package updates module or you can see [here](https://github.com/Alexays/Waybar/wiki/Module:-Custom) how to create a new module where we will also make an example.
+
+```jsonc
+  // Custom module check updates
+  "custom/arch": {
+    "format": " {icon} {}",
+    "tooltip-format": "Packages to Update\n{icon}: {}",
+    "format-icons": [
+      "<span color=\"#d79921\" font-family=\"Font Awesome 6 Pro Solid\"></span>",
+    ],
+    "restart-interval": 1800, // 30 minutes
+    "exec": "bash ~/.config/waybar/scripts/arch-updates.sh",
+    "tooltip": false,
+  }
+```
+
+- `arch-updates.sh`
+
+```bash
+#!/bin/sh
+
+# if now working the command, install the package pacman-contrib
+if ! updates_arch=$(checkupdates 2> /dev/null | wc -l); then
+    updates_arch=0
+fi
+
+if [ $updates_arch -gt 0 ]; then
+    echo $updates_arch
+else
+    echo "0"
+fi
+```
+
+In the documentation for creating [custom](https://github.com/Alexays/Waybar/wiki/Module:-Custom) modules, we will have variables to take into account such as: `format` `restart-interval` `exec`.
+These variables mentioned above will be the:
+
+- `format`: to format the output (String).
+- `restart-interval`: the command will be executed every certain time.
+- `exec`: the location of the script to be executed
+
+  > [!NOTE]
+  > The script can be written in any other language, it can be python for example.
+  > To see an example of a customizable module with a python script. `modules.jsonc` "custom/weather".
+
+##### Create custom module
 
 ## Rofi
 
