@@ -135,6 +135,21 @@ More information to configure monitor see [this](https://wiki.hyprland.org/Confi
 
 ## Notifications
 
+Notification center with `mako`, to configure the "default" settings go to `.config/mako/` and edit `config` file.
+You edit as your like, for example change the font:
+
+```bash
+font=JetBrainsMono Nerd Font Mono Ultra-Bold 10
+```
+
+You change the font size, whatever you want. To see more variables to configure run this command:
+
+```bash
+man 5 mako
+```
+
+And you can see all values.
+
 ## Waybar
 
 ### Keybindings
