@@ -25,6 +25,7 @@
   - [Monitors](#monitors)
   - [Notifications](#notifications)
   - [Waybar](#waybar)
+  - [Rofi](#rofi)
 - [Keybinding](#keybindings)
 
 ### Packages
@@ -151,6 +152,51 @@ man 5 mako
 And you can see all values.
 
 ## Waybar
+
+## Rofi
+
+A window switcher, Application launcher and dmenu replacement. You see the [documentation](https://github.com/lbonn/rofi).
+To configure rofi To configure rofi, we have 5 launchers to configure as colorschemes 'themes' (Drun, Emoji, FilesBrowser, Clipboard, PowerMenu).
+
+##### **Change colorscheme and fonts on (Drun, Emoji, FilesBrowser, Clipboard)**
+
+The location path to configure are: `~/.config/rofi/theme/launcher/shared/colors.rasi` to colorschemes or `~/.config/rofi/theme/launcher/shared/fonts.rasi` to fonts.
+
+```config
+/* Import color-scheme from `colors` directory */
+
+@import "~/.config/rofi/colors/gruvbox.rasi"
+```
+
+To change colorschemes available are in this path `~/.config/rofi/colors/`, just change it to the one you like the most.
+
+- List colorschemes available: `adapta catppuccin everforest navy paper arc cyberpunk gruvbox nord solarized black dracula lovelace onedark yousai`.
+
+Example:
+
+```config
+@import "~/.config/rofi/colors/onedark.rasi"
+```
+
+##### **Change colorscheme and fonts on (PowerMenu)**
+
+The location path to configure are: `~/.config/rofi/theme/powermenu/style/shared/colors.rasi` to colorschemes or `~/.config/rofi/theme/powermenu/style/shared/fonts.rasi` to fonts.
+
+```config
+/* Import color-scheme from `colors` directory */
+
+@import "~/.config/rofi/colors/gruvbox.rasi"
+```
+
+To change colorschemes available are in this path `~/.config/rofi/colors/`, just change it to the one you like the most.
+
+- List colorschemes available: `adapta catppuccin everforest navy paper arc cyberpunk gruvbox nord solarized black dracula lovelace onedark yousai`.
+
+Example:
+
+```config
+@import "~/.config/rofi/colors/onedark.rasi"
+```
 
 ### Keybindings
 
