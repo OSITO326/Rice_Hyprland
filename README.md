@@ -26,7 +26,7 @@
   - [Notifications](#notifications)
   - [Waybar](#waybar)
     - [Initial configuration](#initial-configuration)
-    - [API KEY](#module-weather)
+    - [Module weather](#api-key-weather-module)
     - [Configure "battery" module](#configure-“battery”-module)
     - [Configure custom module](#configure-custom-module)
     - [Create custom moodule](#create-custom-module)
@@ -212,6 +212,27 @@ To delete modules, just delete in the values:
 You may have problems with the operation of the "weather" module. It will not work because you need an API KEY for it to work correctly.
 The script location is at: `~/.config/waybar/scripts/weather.py`
 
+```python
+API_KEY = ""  # Your API here
+UNITS = "Metric"
+UNIT_KEY = "C"
+LANG = "es"
+# UNIT_KEY = "F"
+# LANG = "en"
+```
+
+You can change the language `LANG = "es"` `LANG = "en"` (spanish or english) or change the temperature degrees to fahrenheit in `UNIT_KEY = "F"`. To set your city in the script go [here](https://openweathermap.org/city) search your city for example New York is `https://openweathermap.org/city/5128581` and modify this line:
+
+```python
+CITY = "5128581"
+```
+
+For the API KEY just create an account [here](https://home.openweathermap.org/users/sign_up), once registered go here to create [API KEY](https://openweathermap.org/api). Havin the API KEY just put it here:
+
+```python
+API_KEY = "qwerty12345" # Your API here
+```
+
 ##### Configure "battery" module
 
 To configure the modules in the following path `~/.config/waybar/modules/modules.jsonc`
@@ -315,6 +336,105 @@ These variables mentioned above will be the:
   > To see an example of a customizable module with a python script. `modules.jsonc` "custom/weather".
 
 ##### Create custom module
+
+For this custom module, we will make a module that shows the IP of the VPN we are using.
+
+- Create custom module in `~/.config/waybar/modules/modules.jsonc`
+
+```jsonc
+  // Custom module vpn
+  "custom/vpn": {
+    "format": " {icon} {} ",
+    "format-icons": [
+      "<span color=\"#b16286\" font-family=\"Font Awesome 6 Pro Solid\"></span>",
+    ],
+    "restart-interval": 30, // 30 seconds
+    "exec": "bash ~/.config/waybar/scripts/vpn.sh",
+    "tooltip": false,
+  },
+```
+
+- Create file `vpn.sh` in `~/.config/waybar/scripts/vpn.sh`
+
+```bash
+#!/bin/sh
+
+IFACE=$(/usr/sbin/ifconfig | grep tun0 | awk '{print $1}' | tr -d ':')
+
+if [ "$IFACE" = "tun0" ]; then
+    echo "$(/usr/sbin/ifconfig tun0 | grep "inet " | awk '{print $2}')%{u-}"
+else
+    #echo " Disconnected"
+    echo "N/A"
+fi
+```
+
+- run write permissions to the script with `chmod +x vpn.sh`
+
+- Customize module with css in `~/.config/waybar/style.css`
+
+```css
+/* VPN */
+#custom-vpn {
+  border-radius: 12px 12px 12px 12px;
+  margin: 3px 0 0 0;
+  padding: 0 3px 0 3px;
+  color: @white;
+  background-color: @black;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 1);
+}
+```
+
+- Set module in `~/.config/waybar/config.jsonc`, add the module to any monitor output you like.
+
+Set in HDMI-A-1 in `modules-right`
+
+```jsonc
+[
+  // Monitor
+  {
+    "layer": "top", // Waybar position (top|bottom|left|right)
+    "output": "eDP-1", // Waybar output
+    "include": "~/.config/waybar/modules/modules.jsonc",
+    "spacing": 3, // Gaps between modules (4px)
+    "height": 25,
+    // MODULES
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
+    "modules-right": [
+      "group/group-widgets",
+      "group/group-system",
+      "network",
+      "group/group-data",
+    ],
+  },
+  // HDMI-A-1
+  {
+    "layer": "top", // Waybar position (top|bottom|left|right)
+    "output": "HDMI-A-1", // Waybar output
+    "include": "~/.config/waybar/modules/modules.jsonc",
+    "spacing": 3, // Gaps between modules (4px)
+    "height": 25,
+    // MODULES
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["mpris", "custom/docker", "custom/vpn", "custom/weather"],
+  },
+]
+```
+
+Log out and login to see the changes or run this command:
+
+```bash
+killall waybar
+waybar &
+```
+
+Check that the module is there:
+
+<p align="center">
+  <img src="./.screenshots/custom-module-vpn.jpeg">
+</p>
 
 ## Rofi
 
