@@ -14,14 +14,14 @@ ascii_art="
 echo "$ascii_art"
 
 # Asignar permisos de ejecución a los scripts
-chmod +x ./install_aur_packages.sh
-chmod +x ./install_packages.sh
-chmod +x ./install_rice.sh
-chmod +x ./libreoffice.sh
+chmod +x ./Scripts/install_aur_packages.sh
+chmod +x ./Scripts/install_packages.sh
+chmod +x ./Scripts/install_rice.sh
+chmod +x ./Scripts/libreoffice.sh
 
 # Scripts changebrightness y changevolume
-chmod +x ../bin/changebrightness
-chmod +x ../bin/changevolume
+chmod +x ./bin/changebrightness
+chmod +x ./bin/changevolume
 
 # Bucle para mostrar el menú hasta que el usuario elija salir
 while true; do
