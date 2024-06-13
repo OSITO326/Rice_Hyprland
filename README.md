@@ -21,6 +21,7 @@
 - [Packages](#packages)
 - [Instructions to install](#instructions-to-install)
 - [Basic configuration](#basic-configuration)
+  - [Fonts](#fonts)
   - [Wallpaper](#wallpaper)
   - [Monitors](#monitors)
   - [Notifications](#notifications)
@@ -31,6 +32,9 @@
     - [Configure custom module](#configure-custom-module)
     - [Create custom moodule](#create-custom-module)
   - [Rofi](#rofi)
+  - [GTK Theming](#gtk-theming)
+  - [Qt](#qt)
+  - [SDDM Change theme](#sddm-change-theme)
 - [Keybinding](#keybindings)
 
 ### Packages
@@ -48,12 +52,19 @@ This configuration contains the necessary configuration packages for the operati
 Clone the repository
 
 ```bash
-git clone https://github.com/OSITO326/Rice_Hyprland.git
+git clone --depth=1 https://github.com/OSITO326/Rice_Hyprland.git Rice_Hyprland && chmod +x Rice_Hyprland/Scripts/install.sh && Rice_Hyprland/Scripts/install.sh
 ```
 
 # Basic configuration
 
 In this section, we will cover some of the configuration software that is needed for this system setup. However, please note that the changes we are going to make will not be permanent. You can modify them as you wish.
+
+## Fonts
+
+For the correct functioning of glyphs in Waybar, these sources are necessary.
+
+- Awesome fonts v6 pro ([free](https://fontawesome.com/v6/download) version).
+- JetBrainsMono Nerd Font Mono ([link](https://www.nerdfonts.com/font-downloads) )
 
 ## Wallpaper
 
@@ -481,9 +492,99 @@ Example:
 @import "~/.config/rofi/colors/onedark.rasi"
 ```
 
+### GTK theming
+
+The moment you have been wating for has arrived, you are finally going to
+install a dark theme. I use _Material Black Colors_, so go grab a flavor
+[here](https://www.gnome-look.org/p/1316887/) and the matching icons
+[here](https://www.pling.com/p/1333360/).
+
+I suggest starting with
+_Material-Black-Blueberry_ and _Material-Black-Blueberry-Suru_. You can find
+other GTK themes [on this page](https://www.gnome-look.org/browse/cat/135/).
+Once you have your theme folders downloaded, this is what you do:
+
+```bash
+# Assuming you have downloaded Material-Black-Blueberry
+cd Downloads/
+sudo pacman -S unzip
+unzip Material-Black-Blueberry.zip
+unzip Material-Black-Blueberry-Suru.zip
+rm Material-Black*.zip
+
+# Make your themes available
+sudo mv Material-Black-Blueberry /usr/share/themes
+sudo mv Material-Black-Blueberry-Suru /usr/share/icons
+```
+
+Or open with rofi `GTK Settings` is a GUI to select and apply your Icon Theme or Mouse cursor.
+
+Next time you log in, these changes will be visible. The theme I use is
+[Breeze](https://www.gnome-look.org/p/999927/), download it and then:
+
+```bash
+sudo pacman -S xcb-util-cursor
+cd Downloads/
+tar -xf Breeze.tar.gz
+sudo mv Breeze /usr/share/icons
+```
+
+Or open with rofi `GTK Settings` is a GUI to select and apply your mouse cursor.
+
+<p align="center">
+    <img src="./.screenshots/nwg-look.png">
+</p>
+
+### Qt
+
+GTK themes will not be applied to Qt programs, but you can use
+[**Kvantum**](https://store.kde.org/browse?cat=123&ord=latest) to search and change the default theme.
+
+Open with rofi `Kvantum Manager` is a GUI to apply theme.
+
+<p align="center">
+    <img src="./.screenshots/kvantum1.png">
+</p>
+
+<p align="center">
+    <img src="./.screenshots/kvantum2.png">
+</p>
+
+<p align="center">
+    <img src="./.screenshots/kvantum3.png">
+</p>
+
+<p align="center">
+    <img src="./.screenshots/kvantum4.png">
+</p>
+
+<p align="center">
+    <img src="./.screenshots/kvantum5.png">
+</p>
+
+### SDDM change theme
+
+To change the SDDM login, we need to have `Archlinux-Tweak-Tool` if you executed all scrits you have it installed.
+To run only open Rofi and write `Arch Linux Tool`.
+
+<p align="center">
+    <img src="./.screenshots/arch-linux-tool1.png">
+</p>
+
+This application needs root permissions, if you run a window to enter the root password.
+
+<p align="center">
+    <img src="./.screenshots/arch-linux-tool2.png">
+</p>
+
+<p align="center">
+    <img src="./.screenshots/arch-linux-tool3.png">
+</p>
+
 ### Keybindings
 
 Now that you're in Hyprland, you should know some of the default keybindings.
+To change some app or add new keybindings, edit this file `~/.config/hypr/configs/keybinds.conf`
 
 | Key                            | Action                                |
 | ------------------------------ | ------------------------------------- |

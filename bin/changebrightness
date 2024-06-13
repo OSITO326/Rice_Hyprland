@@ -1,0 +1,26 @@
+#!/bin/bash
+
+backlight_device=$(ls /sys/class/backlight/ | head -n 1)
+icon_path="$HOME/.config/mako/icons/changebrightness.svg"
+
+if [ -z "$backlight_device" ]; then
+    echo "No backlight device found"
+    exit 1
+fi
+
+function send_notification() {
+    # link extract number %
+    brightness=$(brightnessctl -m -d "$backlight_device" | cut -d, -f4 | tr -d %)
+    notify-send -a "Change Brightness" -u low -r 9991 -h int:value:"$brightness" -i "$icon_path" "Brightness: $brightness%" -t 2000
+}
+
+case $1 in
+up)
+    brightnessctl set +10%
+	send_notification $1
+	;;
+down)
+    brightnessctl set 10%-
+	send_notification $1
+	;;
+esac
